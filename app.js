@@ -7,6 +7,8 @@ import dotenv from "dotenv"
 
 import { ErrorMiddleware } from "./middleware/error.js";
 import  userRoute  from "./routes/userRoute.js";
+import fileRoute from "./routes/fileRoute.js"
+
 
 
 dotenv.config()
@@ -19,6 +21,7 @@ app.use(cors())
 
 // routes
 app.use("/api/v1",userRoute)
+app.use("/api/v1/file",fileRoute)
 
 // testing api
 app.get("/test",(req,res,next)=>{
