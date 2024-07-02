@@ -11,7 +11,7 @@ import {
 
 export const regesterControllor = catchAsyncErrors(async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password,phone } = req.body;
     // ====chack email exits====
     const isEmailExist = await userModal.findOne({ email });
     if (isEmailExist) {
@@ -22,6 +22,7 @@ export const regesterControllor = catchAsyncErrors(async (req, res, next) => {
       name,
       email,
       password,
+      phone
     };
 
     const activitionToken = creactActivitonToken(user);
@@ -110,7 +111,7 @@ export const userLogin = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHandler("Please Enter Email Or Password", 400));
     }
 
-    const user = await userModal.findOne({ email }).populate("courses.courseId").select("+password");
+    const user = await userModal.findOne({ email }).select("+password");
 
     if (!user) {
       return next(new ErrorHandler("Invlied email and password", 400));
@@ -197,7 +198,7 @@ export const getOneUser = catchAsyncErrors(async (req, res, next) => {
     console.log(req.user);
 
     /* ==== find user  ===== */
-    const user = await userModal.findById(userId).populate("courses.courseId");
+    const user = await userModal.findById(userId);
     if (!user) {
       return next(new ErrorHandler("user not found", 400));
     }
