@@ -1,5 +1,9 @@
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors.js";
-import { create, getForm } from "../services/formServices/FormServices.js";
+import {
+  create,
+  getForm,
+  getFormById,
+} from "../services/formServices/FormServices.js";
 import ErrorHandler from "../utils/ErrorHandlers.js";
 
 export const createForm = catchAsyncErrors(async (req, res, next) => {
@@ -21,12 +25,23 @@ export const createForm = catchAsyncErrors(async (req, res, next) => {
 export const getFormFunction = catchAsyncErrors(async (req, res, next) => {
   try {
     const form = await getForm();
-
-    console.log(form)
-
     res.status(200).json({
       status: "success",
-      message: "Form create success",
+      message: "Form get success",
+      form,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+});
+
+export const getFormByIdFunction = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const form = await getFormById(id);
+    res.status(200).json({
+      status: "success",
+      message: "Single form get success",
       form,
     });
   } catch (error) {
